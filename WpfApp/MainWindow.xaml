@@ -5,20 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Kassa" Height="450" Width="800">
     <Grid>
-        <ListBox Name="TootedListBox">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="0,2">
-                        <!--<Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="120"/>
-                        </Grid.ColumnDefinitions>-->
-                        <TextBlock Grid.Column="0" Text="{Binding Nimetus}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Button Content="Lisa" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="80" Click="Lisa"/>
+        <TextBox Name="Nimetus" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Nimetus" VerticalAlignment="Top" Width="120" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+        <TextBox Name="Hind" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="Hind" VerticalAlignment="Top" Width="120" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" PreviewTextInput="Hind_PreviewTextInput"/>
+        <Button Content="Lisa ostukorvi" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Width="80" Click="CartAdd"/>
+        <Button Content="Osta" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="80" Click="Osta"/>
+        <Grid Margin="135,10,10,10">
+            <ListView Name="TootedList" SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nimetus" DisplayMemberBinding="{Binding Nimetus}" Width="200"/>
+                        <GridViewColumn Header="Hind" DisplayMemberBinding="{Binding Hind}" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

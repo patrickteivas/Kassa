@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp
 {
-    class Toode
+    public class Toode
     {
         public string Nimetus { get; set; }
         public int Hind { get; set; }

@@ -1,7 +1,0 @@
-Nimetus
-100
-55
-
-Nimetus2
-200
-135

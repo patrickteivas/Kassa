@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace WpfApp
 {
@@ -25,59 +26,117 @@ namespace WpfApp
 
     public partial class MainWindow : Window
     {
+        public List<Toode> Tooted { get; set; }
+        public List<Toode> Ostukorv { get; set; }
+        public string TempNimetus;
+        public int TempHind;
+
         public MainWindow()
         {
+            Tooted = new List<Toode>();
+            Ostukorv = new List<Toode>();
+
             InitializeComponent();
-            UpdateTooted();
         }
 
-        public void UpdateTooted()
+        private void Lisa(object sender, RoutedEventArgs e)
         {
-            string[] Tooted = new string[] { };
-            bool CheckState = true;
+            TempNimetus = Nimetus.Text;
+            TempNimetus = Nimetus.Text;
+            bool result = int.TryParse(Hind.Text, out TempHind);
 
-            while (CheckState == true)
+            if (TempNimetus == "")
             {
-                try
+                MessageBox.Show("Toote nimetus pole lisatud!", "Viga");
+            }
+            else
+            {
+                if (result == false)
                 {
-                    Tooted = System.IO.File.ReadAllLines("../../../Tooted.txt");
-                    CheckState = false;
+                    MessageBox.Show("Vale hind!", "Viga");
                 }
-                catch (System.IO.FileNotFoundException)
+                else
                 {
-                    File.Create("../../../Tooted.txt");
+                    bool State = true;
+                    foreach (var item in Tooted)
+                    {
+                        if(item.Nimetus == TempNimetus) State = false;
+                    }
+                    if (State == true)
+                    {
+                        Tooted.Add(new Toode() { Nimetus = TempNimetus, Hind = TempHind, Kogus = 0 });
+                        Nimetus.Text = Nimetus.Name;
+                        Hind.Text = Hind.Name;
+                    }
+                    else if (State == false)
+                    {
+                        MessageBox.Show("Niisugune toode on juba olemas!", "Viga");
+                    }
                 }
             }
+            TootedList.ItemsSource = null;
+            TootedList.ItemsSource = Tooted;
+        }
 
-            var TootedList = new List<Toode>();
-            int i = 0;
-            string TempNimetus = "";
-            int TempHind = 0;
-            int TempKogus = 0;
-
-            foreach (var item in Tooted)
+        private void CartAdd(object sender, RoutedEventArgs e)
+        {
+            if (TootedList.SelectedIndex > -1)
             {
-                i++;
-                if (i == 1) TempNimetus = item;
-                else if (i == 2) TempHind = int.Parse(item);
-                else if (i == 3)
+                var OnOlemas = Ostukorv.Where(p => String.Equals(p.Nimetus, Tooted[TootedList.SelectedIndex].Nimetus, StringComparison.CurrentCulture));
+
+                if (OnOlemas.Any())
                 {
-                    TempKogus = int.Parse(item);
-                    TootedList.Add(new Toode() { Nimetus = TempNimetus, Hind = TempHind, Kogus = TempKogus });
+                    foreach (var item in OnOlemas) item.Kogus++;
                 }
-                else if (i == 4)
+                else
                 {
-                    i = 0;
-                    //ToDo: Check
+                    Ostukorv.Add(Tooted[TootedList.SelectedIndex]);
+                    Ostukorv[Ostukorv.Count - 1].Kogus++;
                 }
+
+                //string ValitudToode = (TootedList.SelectedItem as Toode).Nimetus;
+                ////Ostukorv = (from item in Ostukorv
+                ////            where item.Nimetus == ValitudToode
+                ////            select item.Kogus);
+                //Ostukorv = Ostukorv.Where(x => x.Nimetus == ValitudToode)
             }
+            else
+            {
+                MessageBox.Show("Valige midagi!", "Viga");
+            }
+                    
+        }
 
-            i = 0;
-            TempNimetus = null;
-            TempHind = 0;
-            TempKogus = 0;
+        private void Osta(object sender, RoutedEventArgs e)
+        {
+            string Tsekk = "";
+            int Summa = 0;
+            foreach (var item in Ostukorv)
+            {
+                Tsekk = Tsekk + "Nimetus: " + item.Nimetus + "\nKogus: " + item.Kogus + "\nHind: " + item.Hind +"EUR\n\n";
+                Summa = Summa + item.Kogus * item.Hind;
+            }
+            Tsekk = Tsekk + "Kokku: " + Summa + "EUR";
+            Ostukorv = new List<Toode>();
+            MessageBox.Show(Tsekk, "Tšekk");
+        }
 
-            TootedListBox.ItemsSource = TootedList;
+        private void Hind_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9.]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        public void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.Text = string.Empty;
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if(tb.Text == "") tb.Text = tb.Name;
         }
     }
 }
