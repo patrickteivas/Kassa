@@ -139,16 +139,10 @@ namespace WpfApp
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        public void Nimetus_GotFocus(object sender, RoutedEventArgs e)
+        public void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            if (tb.Text == "Nimetus") tb.Text = string.Empty;
-        }
-
-        public void Hind_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (tb.Text == "Hind") tb.Text = string.Empty;
+            if (tb.Text == tb.Name) tb.Text = string.Empty;
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
