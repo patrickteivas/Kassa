@@ -126,7 +126,7 @@ namespace WpfApp
             foreach (var item in Ostukorv)
             {
                 Tsekk = Tsekk + "Nimetus: " + item.Nimetus + "\nKogus: " + item.Kogus + "\nHind: " + item.Hind + "EUR\n\n";
-                Summa = Summa + item.Kogus * item.Hind;
+                Summa = Summa + (item.Kogus * item.Hind);
             }
             Tsekk = Tsekk + "Kokku: " + Summa + "EUR";
             Ostukorv = new List<Toode>();
