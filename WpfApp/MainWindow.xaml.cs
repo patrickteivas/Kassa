@@ -111,6 +111,9 @@ namespace WpfApp
                     Ostukorv.Add(Tooted[TootedList.SelectedIndex]);
                     Ostukorv[Ostukorv.Count - 1].Kogus++;
                 }
+
+                OstukorvList.ItemsSource = null;
+                OstukorvList.ItemsSource = Ostukorv;
             }
             else
             {
@@ -130,6 +133,7 @@ namespace WpfApp
             }
             Tsekk = Tsekk + "Kokku: " + Summa + "EUR";
             Ostukorv = new List<Toode>();
+            OstukorvList.ItemsSource = Ostukorv;
             MessageBox.Show(Tsekk, "Tšekk");
         }
 
