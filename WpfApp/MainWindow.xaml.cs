@@ -38,16 +38,17 @@ namespace WpfApp
 
             UpdateTooted();
             InitializeComponent();
-
             TootedList.ItemsSource = Tooted;
 
             void OnProcessExit(object sender, EventArgs e)
             {
                 string Text = "";
+
                 foreach (var item in Tooted)
                 {
                     Text = Text + item.Nimetus + "\n" + item.Hind + "\n\n";
                 }
+
                 File.WriteAllText("../../../Tooted.txt", Text);
             }
         }
@@ -94,6 +95,21 @@ namespace WpfApp
             TootedList.ItemsSource = Tooted;
         }
 
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            if (TootedList.SelectedIndex > -1)
+            {
+                Tooted.Remove(Tooted[TootedList.SelectedIndex]);
+
+                TootedList.ItemsSource = null;
+                TootedList.ItemsSource = Tooted;
+            }
+            else
+            {
+                MessageBox.Show("Valige midagi!", "Viga");
+            }
+        }
+
         private void CartAdd(object sender, RoutedEventArgs e)
         {
             if (TootedList.SelectedIndex > -1)
@@ -119,6 +135,31 @@ namespace WpfApp
             }
         }
 
+        private void CartDelete(object sender, RoutedEventArgs e)
+        {
+            if (OstukorvList.SelectedIndex > -1)
+            {
+                var Valitud = Ostukorv[OstukorvList.SelectedIndex];
+                int ValitudIndex = OstukorvList.SelectedIndex;
+
+                Valitud.Kogus--;
+
+                if (Valitud.Kogus == 0)
+                {
+                    Ostukorv.Remove(Valitud);
+                    ValitudIndex--;
+                }
+
+                OstukorvList.ItemsSource = null;
+                OstukorvList.ItemsSource = Ostukorv;
+                OstukorvList.SelectedItem = Valitud;
+            }
+            else
+            {
+                MessageBox.Show("Valige midagi!", "Viga");
+            }
+        }
+
         private void Osta(object sender, RoutedEventArgs e)
         {
             string Tsekk = "";
@@ -133,24 +174,6 @@ namespace WpfApp
             OstukorvList.ItemsSource = null;
             OstukorvList.ItemsSource = Ostukorv;
             MessageBox.Show(Tsekk, "Tšekk");
-        }
-
-        private void Hind_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9.]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        public void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (tb.Text == tb.Name) tb.Text = string.Empty;
-        }
-
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (tb.Text == "") tb.Text = tb.Name;
         }
 
         public void UpdateTooted()
@@ -191,46 +214,22 @@ namespace WpfApp
             TempHind = 0;
         }
 
-        private void Remove(object sender, RoutedEventArgs e)
+        private void Hind_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (TootedList.SelectedIndex > -1)
-            {
-                Tooted.Remove(Tooted[TootedList.SelectedIndex]);
-
-                TootedList.ItemsSource = null;
-                TootedList.ItemsSource = Tooted;
-            }
-            else
-            {
-                MessageBox.Show("Valige midagi!", "Viga");
-            }
+            Regex regex = new Regex("[^0-9.]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void CartDelete(object sender, RoutedEventArgs e)
+        public void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (OstukorvList.SelectedIndex > -1)
-            {
-                var Valitud = Ostukorv[OstukorvList.SelectedIndex];
-                int ValitudIndex = OstukorvList.SelectedIndex;
-                int KogusOstukorvis = Valitud.Kogus;
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == tb.Name) tb.Text = string.Empty;
+        }
 
-                KogusOstukorvis--;
-                Valitud.Kogus = KogusOstukorvis;
-
-                if (KogusOstukorvis == 0)
-                {
-                    Ostukorv.Remove(Valitud);
-                    ValitudIndex--;
-                }
-
-                OstukorvList.ItemsSource = null;
-                OstukorvList.ItemsSource = Ostukorv;
-                OstukorvList.SelectedItem = Valitud;
-            }
-            else
-            {
-                MessageBox.Show("Valige midagi!", "Viga");
-            }
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "") tb.Text = tb.Name;
         }
     }
 }
