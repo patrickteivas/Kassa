@@ -28,8 +28,6 @@ namespace WpfApp
     {
         public List<Toode> Tooted { get; set; }
         public List<Toode> Ostukorv { get; set; }
-        //public string TempNimetus;
-        //public int TempHind;
 
         public MainWindow()
         {
@@ -91,6 +89,7 @@ namespace WpfApp
                     }
                 }
             }
+
             TootedList.ItemsSource = null;
             TootedList.ItemsSource = Tooted;
         }
@@ -118,7 +117,6 @@ namespace WpfApp
             {
                 MessageBox.Show("Valige midagi!", "Viga");
             }
-
         }
 
         private void Osta(object sender, RoutedEventArgs e)
@@ -132,6 +130,7 @@ namespace WpfApp
             }
             Tsekk = Tsekk + "Kokku: " + Summa + "EUR";
             Ostukorv = new List<Toode>();
+            OstukorvList.ItemsSource = null;
             OstukorvList.ItemsSource = Ostukorv;
             MessageBox.Show(Tsekk, "Tšekk");
         }
@@ -192,9 +191,46 @@ namespace WpfApp
             TempHind = 0;
         }
 
-        //private void Remove(object sender, RoutedEventArgs e)
-        //{
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            if (TootedList.SelectedIndex > -1)
+            {
+                Tooted.Remove(Tooted[TootedList.SelectedIndex]);
 
-        //}
+                TootedList.ItemsSource = null;
+                TootedList.ItemsSource = Tooted;
+            }
+            else
+            {
+                MessageBox.Show("Valige midagi!", "Viga");
+            }
+        }
+
+        private void CartDelete(object sender, RoutedEventArgs e)
+        {
+            if (OstukorvList.SelectedIndex > -1)
+            {
+                var Valitud = Ostukorv[OstukorvList.SelectedIndex];
+                int ValitudIndex = OstukorvList.SelectedIndex;
+                int KogusOstukorvis = Valitud.Kogus;
+
+                KogusOstukorvis--;
+                Valitud.Kogus = KogusOstukorvis;
+
+                if (KogusOstukorvis == 0)
+                {
+                    Ostukorv.Remove(Valitud);
+                    ValitudIndex--;
+                }
+
+                OstukorvList.ItemsSource = null;
+                OstukorvList.ItemsSource = Ostukorv;
+                OstukorvList.SelectedItem = Valitud;
+            }
+            else
+            {
+                MessageBox.Show("Valige midagi!", "Viga");
+            }
+        }
     }
 }

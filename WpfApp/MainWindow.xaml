@@ -7,12 +7,13 @@
         mc:Ignorable="d"
         Title="Kassa" Height="450" Width="800">
     <Grid>
-        <Button Content="Lisa" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="80" Click="Lisa"/>
-        <!--<Button Content="Remove" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="80" Click="Remove"/>-->
         <TextBox Name="Nimetus" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Nimetus" VerticalAlignment="Top" Width="120" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <TextBox Name="Hind" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="Hind" VerticalAlignment="Top" Width="120" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" PreviewTextInput="Hind_PreviewTextInput"/>
-        <Button Content="Lisa ostukorvi" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Width="80" Click="CartAdd"/>
-        <Button Content="Osta" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="80" Click="Osta"/>
+        <Button Content="Lisa" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="80" Height="20" Click="Lisa"/>
+        <Button Content="Kustuta" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" Width="80" Height="20" Click="Remove"/>
+        <Button Content="Lisa ostukorvi" HorizontalAlignment="Left" Margin="10,318,0,0" VerticalAlignment="Top" Width="80" Height="20" Click="CartAdd"/>
+        <Button Content="Kustuta&#x0a;ostukorvist" HorizontalAlignment="Left" Margin="10,343,0,0" VerticalAlignment="Top" Width="80" Height="40" Click="CartDelete"/>
+        <Button Content="Osta" HorizontalAlignment="Left" Margin="10,388,0,0" VerticalAlignment="Top" Width="80" Height="20" Click="Osta"/>
         <Grid Margin="135,10,10,10">
             <ListView Name="TootedList" SelectionMode="Single" Margin="0,0,327,0">
                 <ListView.View>
