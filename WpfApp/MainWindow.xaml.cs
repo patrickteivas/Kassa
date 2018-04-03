@@ -60,7 +60,6 @@ namespace WpfApp
             int TempHind;
 
             TempNimetus = Nimetus.Text;
-            TempNimetus = Nimetus.Text;
             bool result = int.TryParse(Hind.Text, out TempHind);
 
             if (TempNimetus == "")
