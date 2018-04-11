@@ -147,12 +147,15 @@ namespace WpfApp
                 if (Valitud.Kogus == 0)
                 {
                     Ostukorv.Remove(Valitud);
-                    ValitudIndex--;
+                    if (Ostukorv.Count - 1 < ValitudIndex)
+                    {
+                        ValitudIndex--;
+                    }
                 }
 
                 OstukorvList.ItemsSource = null;
                 OstukorvList.ItemsSource = Ostukorv;
-                OstukorvList.SelectedItem = Valitud;
+                OstukorvList.SelectedIndex = ValitudIndex;
             }
             else
             {
